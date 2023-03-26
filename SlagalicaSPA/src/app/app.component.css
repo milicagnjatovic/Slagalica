@@ -1,0 +1,24 @@
+
+h1 {
+    margin-top: 20vh;
+    text-align: center;
+    font-size: 4em;
+}
+
+/* button {
+    background-color: transparent;
+    border: solid #264653 1px;
+} */
+
+/* button:hover {
+    box-shadow: 0px 0px 4px 5px #264653;
+} */
+
+
+#play {
+    margin: auto;
+    width: 50%;
+    display: block;
+    background-color: white;
+    font-size: 1.5em;
+}
