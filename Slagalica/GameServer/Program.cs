@@ -1,3 +1,5 @@
+using GameServer.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-// We are using SignalIR for the server sockets
+// We are using SignalR for the server sockets
 builder.Services.AddSignalR();
 
 var app = builder.Build();
@@ -19,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<GameHub>("/gameServer");
 
 app.UseAuthorization();
 
