@@ -37,3 +37,20 @@ button:hover, input[type=submit]:hover {
     border-radius: 5px;
     font-weight: bold;
 }
+
+
+*::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 5px;
+  }
+   
+*::-webkit-scrollbar-track {
+background: transparent;
+/* box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+}
+
+*::-webkit-scrollbar-thumb {
+background: #264653;
+/* border: 3px solid #264653; */
+border-radius: 10px;
+}

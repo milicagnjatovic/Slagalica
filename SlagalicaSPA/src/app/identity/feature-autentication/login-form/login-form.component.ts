@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AutenticationFacadeService } from '../../domain/aplication-services/autentication-facade.service';
+import { Router } from '@angular/router';
 
 interface ILoginFormData {
   username: string;
@@ -17,7 +18,8 @@ interface ILoginFormData {
 export class LoginFormComponent  implements OnInit{
   public loginForm: FormGroup;
 
-  constructor(private authenicationService: AutenticationFacadeService){
+  constructor(private authenicationService: AutenticationFacadeService,
+    private routerService: Router){
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, Validators.minLength(5)]),
       password: new FormControl('', [Validators.required, Validators.minLength(5)])
@@ -41,6 +43,9 @@ export class LoginFormComponent  implements OnInit{
       (success: boolean) => {
         window.alert('logged in');
         this.loginForm.reset();
+        if(success) {
+          this.routerService.navigate(['/identity', 'profile']);
+        }
       }
     ); 
   }

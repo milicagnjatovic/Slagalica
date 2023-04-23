@@ -1,0 +1,18 @@
+<div *ngIf="appStateOb | async as appState">
+    <table *ngIf="!appState.isEmpty(); else notLoggedIn">
+        <tr>
+            <td>Username</td>
+            <td>{{appState?.username}}</td>
+        </tr>
+
+        <tr>
+            <td>Email</td>
+            <td>{{appState?.email}}</td>
+        </tr>
+    </table>
+
+
+    <ng-template #notLoggedIn>
+        <p>Please <a [routerLink]="['/identity', 'login']">login</a> to see your information.</p>
+    </ng-template>
+</div>
