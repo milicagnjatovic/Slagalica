@@ -4,7 +4,7 @@ namespace GameServer.Repositories
 {
     public class GameRepository : IGameRepository
     {
-        public List<Game> Games { get; } = new List<Game>();   
         public GameRepository() {}
+        public List<Game> Games { get; } = new List<Game>();   
     }
 }

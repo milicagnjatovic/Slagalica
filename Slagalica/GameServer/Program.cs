@@ -1,4 +1,5 @@
 using GameServer.Hubs;
+using GameServer.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Adding game repository
+builder.Services.AddSingleton<IGameRepository>(new GameRepository());
 
 // We are using SignalR for the server sockets
 builder.Services.AddSignalR();
