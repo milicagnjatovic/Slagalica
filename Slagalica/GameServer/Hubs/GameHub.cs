@@ -101,6 +101,13 @@ namespace GameServer.Hubs
                 await Submit(answers, CalculateMatches, GetAssociations, Clients.Group(game.Id).SendAssociations, "Matches");
         }
 
+        public async Task SubmitAssociations(string answers)
+        {
+            var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
+            if (game != null)
+                await Submit(answers, CalculateAssociations, game.getWinnerMessage, Clients.Group(game.Id).SendOutcomeMessage, "Associations");
+        }
+
         public override async Task OnConnectedAsync()
         {
             Console.WriteLine("Connected with client!");
