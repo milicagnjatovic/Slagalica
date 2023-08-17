@@ -12,8 +12,8 @@ public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
         builder.HasData(
             new IdentityRole
             {
-                Name = Roles.Buyer,
-                NormalizedName = Roles.Buyer.ToUpper(),
+                Name = Roles.Player,
+                NormalizedName = Roles.Player.ToUpper(),
             },
             new IdentityRole
             {

@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize(Roles = Roles.Admin)]
-    [Authorize(Roles = Roles.Buyer)]
+    [Authorize(Roles = Roles.Player)]
     [HttpGet("{username}")]
     [ProducesResponseType(typeof(UserDetailsDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<UserDetailsDto>> GetUser(string username)

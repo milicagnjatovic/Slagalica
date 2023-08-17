@@ -24,9 +24,9 @@ public class AuthenticationController : RegistrationControllerBase
     [HttpPost("[action]")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RegisterBuyer([FromBody] NewUserDto newUser)
+    public async Task<IActionResult> RegisterPlayer([FromBody] NewUserDto newUser)
     {
-        return await RegisterNewUserWithRoles(newUser, new[] { Roles.Buyer });
+        return await RegisterNewUserWithRoles(newUser, new[] { Roles.Player });
     }
 
     [HttpPost("[action]")]
