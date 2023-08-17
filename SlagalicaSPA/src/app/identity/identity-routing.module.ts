@@ -6,7 +6,8 @@ import { IdentityComponent } from './identity.component';
 import { UserProfileComponent } from './feature-autentication/user-profile/user-profile.component';
 import { LogoutComponent } from './feature-autentication/logout/logout.component';
 
-const routes: Routes = [{ path: '', component: IdentityComponent , children: [{path: 'login', component: LoginFormComponent}]},
+const routes: Routes = [{ path: '', component: IdentityComponent , children: [
+  {path: 'login', component: LoginFormComponent}]},
   {path: 'register', component: RegisterFormComponent},
   {path: 'profile', component: UserProfileComponent},
   {path: 'logout', component: LogoutComponent}, 
