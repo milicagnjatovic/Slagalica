@@ -22,11 +22,17 @@ public class AuthenticationController : RegistrationControllerBase
     }
 
     [HttpPost("[action]")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterPlayer([FromBody] NewUserDto newUser)
     {
-        return await RegisterNewUserWithRoles(newUser, new[] { Roles.Player });
+        // return await RegisterNewUserWithRoles(newUser, new[] { Roles.Player });
+        await RegisterNewUserWithRoles(newUser, new[] { Roles.Player });
+        UserCredentialsDto uc = new UserCredentialsDto();
+        uc.UserName = newUser.UserName;
+        uc.Password = newUser.Password;
+        var user = await _authService.ValidateUser(uc);
+        return Ok(await _authService.CreateAuthenticationModel(user));
     }
 
     [HttpPost("[action]")]
