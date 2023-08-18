@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, map, catchError, of, switchMap, take } from 'rxjs';
+import { Observable, map, catchError, of, switchMap, take, connect } from 'rxjs';
 import { AppStateService } from 'src/app/shared/app-state/app-state.service';
 import { JwtPayloadKeys } from 'src/app/shared/jwt/jwt-payload-keys';
 import { JwtService } from 'src/app/shared/jwt/jwt.service';
@@ -25,6 +25,8 @@ export class AutenticationFacadeService {
 
   public login(username: string, password: string) : Observable<boolean> {
     const request : ILoginRequest = {username, password};
+    console.log("request ")
+    console.log(request)
     return this.autenticationService.login(request).pipe(
       switchMap( (loginResponse: ILoginResponse) => { 
         console.log(loginResponse);
@@ -36,6 +38,12 @@ export class AutenticationFacadeService {
         this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
         this.appStateService.setRole(payload[JwtPayloadKeys.Role]);
 
+        console.log("payload ")
+        console.log(payload)
+        console.log(payload[JwtPayloadKeys.Username])
+        console.log(payload[JwtPayloadKeys.Email])
+        console.log(payload[JwtPayloadKeys.Role])
+
         return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
       }),
       map((userDetails: IUserDetails) => {
@@ -45,7 +53,8 @@ export class AutenticationFacadeService {
         return true;
       }),
       catchError((err) => {
-        console.log(err);
+        console.error('AutenticationFacadeService:')
+        console.error(err);
         this.appStateService.clearAppState();
         return of(false);
       })

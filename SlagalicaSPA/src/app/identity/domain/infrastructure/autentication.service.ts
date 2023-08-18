@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ILoginRequest } from '../model/login-request';
@@ -11,12 +11,13 @@ import { IRefreshTokenResponse } from '../model/refresh-token-response';
   providedIn: 'root'
 })
 export class AutenticationService {
-  private readonly url: string = 'https://f9c42a0c-c829-401c-8373-527a2340f523.mock.pstmn.io/login';
+  // private readonly url: string = 'https://f9c42a0c-c829-401c-8373-527a2340f523.mock.pstmn.io/login';
+  private readonly url: string = 'http://localhost:4000/api/v1/Authentication';
 
   constructor(private httpClient: HttpClient) { }
 
   public login(request: ILoginRequest) : Observable<ILoginResponse> {
-    return this.httpClient.post<ILoginResponse>(`${this.url}/login`, request); 
+    return this.httpClient.post<ILoginResponse>(`${this.url}/Login`, request); 
   }
 
   public logout(request: ILogoutRequest) : Observable<Object>{

@@ -14,9 +14,10 @@ import { AutenticationFacadeService } from 'src/app/identity/domain/aplication-s
 @Injectable()
 export class AuthenticationInterceptor implements HttpInterceptor {
 
-  private readonly whitelistUrks: string[] = [
+  private readonly whitelistUrls: string[] = [
     '/api/v1/Authentication/Login',
     '/api/v1/Authentication/Refresh',
+    '/api/v1/Authentication/User',
   ];
 
   private isRefreshing: boolean = false;
@@ -29,7 +30,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
       return next.handle(request);
     }
 
-    this.appStateService.getAppState().pipe(
+    return this.appStateService.getAppState().pipe(
       take(1),
       switchMap((appState: IAppState) => {
         if (appState.accessToken !== undefined) {
@@ -45,12 +46,10 @@ export class AuthenticationInterceptor implements HttpInterceptor {
         return throwError(()=>err);
       })
     );
-    return next.handle(request); // ?
-
   }
 
   private isWhitelisted(url: string): boolean {
-    return this.whitelistUrks.some( (whitelistedUrl: string) =>  url.includes(whitelistedUrl));
+    return this.whitelistUrls.some( (whitelistedUrl: string) =>  url.includes(whitelistedUrl));
   }
 
   private addToken(request: HttpRequest<unknown>, accessToken: string) : HttpRequest<unknown> {

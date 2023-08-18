@@ -10,8 +10,9 @@ header {
 }
 
 header button {
-    float: right;
+    /* float: right; */
     margin: 5px;
     height: 8vh;
     width: 30vh;
+    display: inline-block;
 }
