@@ -6,6 +6,7 @@ import { ILoginResponse } from '../model/login-response';
 import { ILogoutRequest } from '../model/logout-request';
 import { IRefreshTokenRequest } from '../model/refresh-token-request.service';
 import { IRefreshTokenResponse } from '../model/refresh-token-response';
+import { IRegisterRequest } from '../model/register-request';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,12 @@ export class AutenticationService {
 
   public login(request: ILoginRequest) : Observable<ILoginResponse> {
     return this.httpClient.post<ILoginResponse>(`${this.url}/Login`, request); 
+  }
+
+  public register(request: IRegisterRequest) : Observable<ILoginResponse> {
+    console.log('Request ')
+    console.log(request)
+    return this.httpClient.post<ILoginResponse>(`${this.url}/RegisterPlayer`, request); 
   }
 
   public logout(request: ILogoutRequest) : Observable<Object>{

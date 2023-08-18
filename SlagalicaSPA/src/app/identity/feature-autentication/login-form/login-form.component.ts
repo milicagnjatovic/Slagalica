@@ -41,8 +41,8 @@ export class LoginFormComponent  implements OnInit{
 
     this.authenicationService.login(data.username, data.password).subscribe(
       (success: boolean) => {
-        this.loginForm.reset();
         if(success) {
+          this.loginForm.reset();
           this.routerService.navigate(['/profile']);
         } else {
           window.alert('Wrong credentials. Try again!')

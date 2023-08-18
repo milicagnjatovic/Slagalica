@@ -12,6 +12,7 @@ import { AppState, IAppState } from 'src/app/shared/app-state/app-state';
 import { ILogoutRequest } from '../model/logout-request';
 import { IRefreshTokenRequest } from '../model/refresh-token-request.service';
 import { IRefreshTokenResponse } from '../model/refresh-token-response';
+import { IRegisterRequest } from '../model/register-request';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,47 @@ export class AutenticationFacadeService {
         this.appStateService.clearAppState();
         return of(false);
       })
+    );
+  }
+
+
+  public register(username: string, password: string, email: string, firstName: string, lastName: string)  : Observable<boolean> {
+    const request : IRegisterRequest = {username, password, email, firstName, lastName, phoneNumber:''};
+    console.log("request ")
+    console.log(request)
+    return this.autenticationService.register(request).pipe(
+
+      switchMap( (loginResponse: ILoginResponse) => { 
+        console.log(loginResponse);
+        this.appStateService.setAccessToken(loginResponse.accessToken);
+        this.appStateService.setRefreshToken(loginResponse.refreshToken);
+
+        const payload = this.jwtService.parsePayload(loginResponse.accessToken);
+        this.appStateService.setUsername(payload[JwtPayloadKeys.Username]);
+        this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
+        this.appStateService.setRole(payload[JwtPayloadKeys.Role]);
+
+        console.log("payload ")
+        console.log(payload)
+        console.log(payload[JwtPayloadKeys.Username])
+        console.log(payload[JwtPayloadKeys.Email])
+        console.log(payload[JwtPayloadKeys.Role])
+
+        return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
+      }),
+      map((userDetails: IUserDetails) => {
+        this.appStateService.setFirstName(userDetails.firstName);
+        this.appStateService.setLastName(userDetails.lastName);
+        this.appStateService.setUserId(userDetails.id);
+        return true;
+      }),
+      catchError((err) => {
+        console.error('AutenticationFacadeService:')
+        console.error(err);
+        this.appStateService.clearAppState();
+        return of(false);
+      }
+      )
     );
   }
 
