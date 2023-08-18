@@ -33,8 +33,8 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<IEnumerable<UserDetailsDto>>(users));
     }
 
-    [Authorize(Roles = Roles.Admin)]
-    [Authorize(Roles = Roles.Player)]
+    // [Authorize(Roles = Roles.Admin)]
+    // [Authorize(Roles = Roles.Player)] // TODO
     [HttpGet("{username}")]
     [ProducesResponseType(typeof(UserDetailsDto), StatusCodes.Status200OK)]
     public async Task<ActionResult<UserDetailsDto>> GetUser(string username)
