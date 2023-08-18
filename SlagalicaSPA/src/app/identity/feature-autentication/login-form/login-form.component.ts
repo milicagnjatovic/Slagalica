@@ -33,23 +33,19 @@ export class LoginFormComponent  implements OnInit{
 
   public onLoginFormSubmit(): void {
     if(this.loginForm.invalid) {
-      window.alert('Invalid data');
+      window.alert('Username and password need to have more than 5 characters!');
       return;
     }
 
     const data: ILoginFormData = this.loginForm.value as ILoginFormData;
 
-console.log('Data1 ')
-console.log(this.loginForm)
-console.log(this.loginForm.value)
-console.log(this.loginForm.value as ILoginFormData)
-
     this.authenicationService.login(data.username, data.password).subscribe(
       (success: boolean) => {
-        window.alert('logged in' + success + data.username + data.password);
         this.loginForm.reset();
         if(success) {
           this.routerService.navigate(['/profile']);
+        } else {
+          window.alert('Wrong credentials. Try again!')
         }
       }
     ); 

@@ -10,9 +10,10 @@ header {
 }
 
 header button {
-    /* float: right; */
-    margin: 5px;
-    height: 8vh;
-    width: 30vh;
-    display: inline-block;
+    margin: 10px;
+    /* height: 8vh; */
+    width:min-content;
+    padding: 15px;
+    /* display: inline-block; */
+    float: right;
 }
