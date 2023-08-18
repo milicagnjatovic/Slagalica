@@ -7,10 +7,10 @@ import { UserProfileComponent } from './feature-autentication/user-profile/user-
 import { LogoutComponent } from './feature-autentication/logout/logout.component';
 
 const routes: Routes = [{ path: '', component: IdentityComponent , children: [
-  {path: 'login', component: LoginFormComponent}]},
+  {path: 'login', component: LoginFormComponent},
   {path: 'register', component: RegisterFormComponent},
   {path: 'profile', component: UserProfileComponent},
-  {path: 'logout', component: LogoutComponent}, 
+  {path: 'logout', component: LogoutComponent}]}, 
 ];
 
 @NgModule({

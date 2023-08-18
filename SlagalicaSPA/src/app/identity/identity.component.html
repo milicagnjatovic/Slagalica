@@ -1,7 +1,9 @@
 
 <header>
-    <a [routerLink]="['/identity', 'register']"><button id="register">register</button></a>
-    <a [routerLink]="['/identity', 'login']"><button id="login">login</button></a>
+    <a [routerLink]="['login']"><button id="login">login</button></a>
+    <a [routerLink]="['register']"><button id="register">register</button></a>
 </header>
+
+<!-- <app-register-form></app-register-form> -->
 
 <router-outlet></router-outlet>
