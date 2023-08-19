@@ -23,11 +23,11 @@ export class RegisterFormComponent implements OnInit {
   constructor(private authenicationService: AutenticationFacadeService,
     private routerService: Router){
     this.registerForm = new FormGroup({
-      username: new FormControl('test1', [Validators.required, Validators.minLength(5)]),
-      firstName: new FormControl('y', [Validators.required]),
-      lastName: new FormControl('z', [Validators.required]),
-      password: new FormControl('12345678', [Validators.required, Validators.minLength(5)]),
-      email: new FormControl('t@test', [Validators.email, Validators.required])
+      username: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      email: new FormControl('', [Validators.email, Validators.required])
     })
   }
 
