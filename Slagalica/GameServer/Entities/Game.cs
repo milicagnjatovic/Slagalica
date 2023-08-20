@@ -23,8 +23,8 @@
 
         public Game(Player player1, Player player2)
         {
-            Player1 = player1;
-            Player2 = player2;
+            Player1 = player1 ?? throw new ArgumentNullException(nameof(player1));
+            Player2 = player2 ?? throw new ArgumentNullException(nameof(player2));
             InProgress = false;
         }
 

@@ -25,6 +25,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// CORS for angular
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:5274")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 app.MapHub<GameHub>("/gameServer");
 
 app.UseAuthorization();
