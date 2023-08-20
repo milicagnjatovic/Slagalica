@@ -11,4 +11,14 @@ export class Question {
         )
 
     }
+
+    public addCorrectAnswerToAnswers(){
+        console.log('start')
+        this.answers.push(this.correctAnswer);
+        this.answers.sort(
+            () => Math.random() - 0.5
+        );
+        console.log('end')
+
+    }
 }

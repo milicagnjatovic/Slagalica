@@ -1,5 +1,6 @@
 import { Component, OnInit, Query } from '@angular/core';
 import { Question } from '../models/question';
+import { GameServerService } from '../services/game-server.service';
 
 @Component({
   selector: 'app-who-knows',
@@ -9,24 +10,24 @@ import { Question } from '../models/question';
 
 export class WhoKnowsComponent implements OnInit{
   ngOnInit(): void {
-    
+    this.questions = this.gameService.whoKnows;
+    this.currentQuestion = 0
   }
 
-  public questions: Question[];
-  public currentQuestion: number;
+  public questions: Question[] = [];
+  public currentQuestion: number = 0;
 
   private points: number = 0;
 
   public response = '';
   public show = "display: none"
 
-  constructor () {
+  constructor (private gameService : GameServerService) {
     this.questions = [
-      new Question('q1', ['w11', 'w12', 'w13'], 'c'),
-      new Question('q2', ['w21', 'w22', 'w23'], 'c'),
-      new Question('q3', ['w31', 'w32', 'w33'], 'c'),
+      // new Question('q1', ['w11', 'w12', 'w13'], 'c'),
+      // new Question('q2', ['w21', 'w22', 'w23'], 'c'),
+      // new Question('q3', ['w31', 'w32', 'w33'], 'c'),
     ];
-    this.currentQuestion = 0;
   }
 
   public setNextQuestion () {
