@@ -10,7 +10,7 @@ import { Question } from './models/question';
 })
 export class GamesComponent implements OnInit, OnDestroy {
 
-  constructor(private gameServerService: GameServerService, private router: Router) {
+  constructor(public gameServerService: GameServerService, private router: Router) {
   }
 
   ngOnInit() {
@@ -28,4 +28,5 @@ export class GamesComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.gameServerService.disconnect()
   }
+
 }

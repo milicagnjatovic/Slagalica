@@ -41,6 +41,7 @@ export class GameServerService {
     for(let question of questions){
       this.whoKnows.push(
         new Question(
+          question.numId,
           question.question, 
           question.answers,
           question.correctAnswer)
@@ -57,5 +58,9 @@ export class GameServerService {
     this.serverConnection.on(typeOfMessage, (message: string) => {
       callback(message);
     })
+  }
+
+  public waitingForTheGame() : boolean{
+    return this.whoKnows.length==0;
   }
 }

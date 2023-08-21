@@ -1,6 +1,7 @@
 
 export class Question {
     constructor(
+        public numId: number,
         public question: string,
         public answers: string[],
         public correctAnswer: string,

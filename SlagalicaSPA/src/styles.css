@@ -54,3 +54,15 @@ background: #264653;
 /* border: 3px solid #264653; */
 border-radius: 10px;
 }
+
+.gameBox {
+    background-color: #264653;
+    width: 80%;
+    height: 80vh;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    position: fixed;
+    top: 10vh;
+    right: 10vw;
+}

@@ -2,11 +2,19 @@ import { Component, OnInit, Query } from '@angular/core';
 import { Question } from '../models/question';
 import { GameServerService } from '../services/game-server.service';
 
+class Answer {
+  constructor (
+    public numId: number,
+    public answer: string
+  ) {}
+}
+
 @Component({
   selector: 'app-who-knows',
   templateUrl: './who-knows.component.html',
   styleUrls: ['./who-knows.component.css']
 })
+
 
 export class WhoKnowsComponent implements OnInit{
   ngOnInit(): void {
@@ -18,6 +26,8 @@ export class WhoKnowsComponent implements OnInit{
   public currentQuestion: number = 0;
 
   private points: number = 0;
+
+  private answers: Answer[] = [];
 
   public response = '';
   public show = "display: none"
@@ -31,20 +41,29 @@ export class WhoKnowsComponent implements OnInit{
   }
 
   public setNextQuestion () {
+    console.log(this.answers)
     this.currentQuestion = this.currentQuestion + 1;
     if (this.currentQuestion >= this.questions.length) {      
       this.response = `Rezultat: ${this.points}/${this.questions.length}`;
-      return
+      
+      console.log(JSON.stringify(this.answers))
+
+      this.gameService.sendMessage(
+        'SubmitWhoKnowsKnows', 
+        JSON.stringify(this.answers))
+      return;
     }
     this.show = this.show + 'none'
     this.response = '';
   }
 
   checkAnswer(event: Event){
-    if(this.response != '') 
+    if(this.response != '') {
       return
+    }
 
     let clicked = (event.target as HTMLButtonElement).innerHTML;
+    this.answers.push(new Answer(this.questions[this.currentQuestion].numId, clicked));
     if (clicked == this.questions[this.currentQuestion].correctAnswer) {
       this.points = this.points + 1;
       this.response = 'Odlicno! >'
@@ -53,5 +72,6 @@ export class WhoKnowsComponent implements OnInit{
     }
     this.show = this.show.replace('none', '')
   }
+
 
 }

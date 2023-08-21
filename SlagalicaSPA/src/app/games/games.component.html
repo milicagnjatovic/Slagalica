@@ -1,2 +1,7 @@
 <!-- <h1>Game is on!</h1> -->
 <router-outlet></router-outlet>
+
+<div *ngIf="gameServerService.waitingForTheGame()" class="gameBox">
+    <h1>Waiting for game!</h1>
+    <img src="assets/loading.gif" alt="loading" style="width: 50%; height: 50%; display: block; margin: auto;">
+</div>
