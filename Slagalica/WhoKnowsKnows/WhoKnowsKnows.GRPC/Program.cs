@@ -13,6 +13,7 @@ builder.Services.AddGrpc();
 
 builder.Services.AddWhoKnowsKnowsCommonServices();
 
+// Adding mapping for grpc types.
 builder.Services.AddAutoMapper(configuration =>
 {
     configuration.CreateMap<GetQuestionDTO, GetQuestionsResponse.Types.Question>().ReverseMap();

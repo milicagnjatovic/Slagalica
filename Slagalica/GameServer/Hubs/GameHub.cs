@@ -1,18 +1,22 @@
 ﻿using GameServer.Entities;
+using GameServer.GrpcServices;
 using GameServer.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace GameServer.Hubs
 {
     public class GameHub : Hub<IGameClient>
     {
-        private IGameRepository _repository;
+        private readonly IGameRepository _repository;
+        private readonly WhoKnowsKnowsGrpcService _whoKnowsKnowsGrpcService;
         public int numberOfClients { get; set; }
 
-        public GameHub(IGameRepository repository)
+        public GameHub(IGameRepository repository, WhoKnowsKnowsGrpcService whoKnowsKnowsGrpcService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _whoKnowsKnowsGrpcService = whoKnowsKnowsGrpcService ?? throw new ArgumentNullException(nameof(whoKnowsKnowsGrpcService));
             numberOfClients = 0;
         }
 
@@ -28,45 +32,38 @@ namespace GameServer.Hubs
             return "[{\"a\": \"liquid}\"  \"b\": \"H2O\" \"c\": \"drink\"  \"d\": \"drop\"  \"column_answer\": \"water\"]";
         }
 
-        public string GetWhoKnowsKnows()
+        public async Task<string> GetWhoKnowsKnows()
         {
-            // Just a placeholder, will be replaced with an API call.
-            return "{ " +
-                "\"question\": \"what is the captial of Canada?\", " +
-                "\"a\": \"Ottawa\", " +
-                "\"b\": \"Montreal\", " +
-                "\"c\": \"Vancouver\", " +
-                "\"d\": \"Toronto\", " +
-                "\"correct\": \"Ottawa\"" +
-                "}";
+            var response = await _whoKnowsKnowsGrpcService.GetQuestions();
+            return JsonSerializer.Serialize(response).ToString();
         }
 
         // Function for testing program, will be removed later
         public async Task TestWhoKnowsKnows()
         {
             Console.WriteLine("Invoking Test method...");
-            await Clients.All.SendWhoKnowsKnows(GetWhoKnowsKnows());
+            await Clients.All.SendWhoKnowsKnows(await GetWhoKnowsKnows());
         }
 
-        public int CalculateWhoKnowsKnows(string answers)
+        public async Task<int> CalculateWhoKnowsKnows(string answers)
+        {
+            var response = await _whoKnowsKnowsGrpcService.CalculatePoints(answers);
+            return response.Points;
+        }
+
+        public async Task<int> CalculateMatches(string answers)
         {
             // Just a placeholder, will be replaced with an API call.
-            return 10;
+            return await new Task<int>(() => 10);
         }
 
-        public int CalculateMatches(string answers)
+        public async Task<int> CalculateAssociations(string answers)
         {
             // Just a placeholder, will be replaced with an API call.
-            return 10;
+            return await new Task<int>(() => 10);
         }
 
-        public int CalculateAssociations(string answers)
-        {
-            // Just a placeholder, will be replaced with an API call.
-            return 10;
-        }
-
-        public async Task Submit(string answers, Func<string, int> calculatePointsFunction, Func<string> getGameFunction, Func<string, Task> sendGameFunc, string currentGame)
+        public async Task Submit(string answers, Func<string, Task<int>> calculatePointsFunction, Func<string> getGameFunction, Func<string, Task> sendGameFunc, string currentGame)
         {
             var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
 
@@ -74,7 +71,7 @@ namespace GameServer.Hubs
             var otherPlayer = Context.ConnectionId == game.Player1.ConnectionId ? game.Player2 : game.Player1;
 
             thisPlayer.Submitted[currentGame] = true;
-            var pointsWon = calculatePointsFunction(answers);
+            var pointsWon = await calculatePointsFunction(answers);
             thisPlayer.Points += pointsWon;
 
             if (otherPlayer.Submitted[currentGame])
@@ -135,7 +132,7 @@ namespace GameServer.Hubs
 
             if (game.InProgress) {
                 Console.WriteLine("Sending games to clients");
-                var questionsJson = GetWhoKnowsKnows();
+                var questionsJson = await GetWhoKnowsKnows();
                 await Clients.Group(game.Id).SendWhoKnowsKnows(questionsJson);
             }
 

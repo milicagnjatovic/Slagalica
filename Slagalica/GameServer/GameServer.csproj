@@ -7,7 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\WhoKnowsKnows\WhoKnowsKnows.GRPC\Protos\whoknowsknows.proto" GrpcServices="Client">
+      <Link>Protos\whoknowsknows.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>
