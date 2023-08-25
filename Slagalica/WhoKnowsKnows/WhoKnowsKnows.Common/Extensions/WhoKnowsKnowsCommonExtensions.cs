@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WhoKnowsKnows.Common.Data;
+using WhoKnowsKnows.Common.Entities;
 using WhoKnowsKnows.Common.Repositories;
 using WhoKnowsKnows.Common.Repositories.Interfaces;
 
@@ -16,6 +17,9 @@ namespace WhoKnowsKnows.Common.Extensions
         {
             services.AddScoped<IQuestionContext, QuestionContext>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddAutoMapper(configuration => {
+                configuration.CreateMap<GetQuestionDTO, Question>().ReverseMap();
+            });
         }
     }
 }

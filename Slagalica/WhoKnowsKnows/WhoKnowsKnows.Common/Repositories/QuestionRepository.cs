@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using AutoMapper;
+using MongoDB.Driver;
 using WhoKnowsKnows.Common.Data;
 using WhoKnowsKnows.Common.Entities;
 using WhoKnowsKnows.Common.Repositories.Interfaces;
@@ -8,12 +9,14 @@ namespace WhoKnowsKnows.Common.Repositories
     public class QuestionRepository : IQuestionRepository
     {
         public IQuestionContext _context;
+        private readonly IMapper _mapper;
 
         public long IdCount { get; set; }
 
-        public QuestionRepository(IQuestionContext context)
+        public QuestionRepository(IQuestionContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 
             IdCount = _context.Questions.CountDocuments(Builders<Question>.Filter.Empty);
         }
@@ -28,9 +31,11 @@ namespace WhoKnowsKnows.Common.Repositories
             return await _context.Questions.Find(q => q.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Question> GetQuestion(long numId)
+        public async Task<GetQuestionDTO> GetQuestion(long numId)
         {
-            return await _context.Questions.Find(q => q.NumId == numId).FirstOrDefaultAsync();
+            var question = await _context.Questions.Find(q => q.NumId == numId).FirstOrDefaultAsync();
+
+            return _mapper.Map<GetQuestionDTO>(question);
         }
 
         public async Task<bool> DeleteQuestion(string id)

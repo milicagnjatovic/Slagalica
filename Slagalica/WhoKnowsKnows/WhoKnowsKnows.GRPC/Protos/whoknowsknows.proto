@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "WhoKnowsKnows.GRPC.Protos";
+
+service WhoKnowsKnowsProtoService {
+	rpc GetQuestions (GetQuestionsRequest) returns (GetQuestionsResponse);
+	rpc CalculatePoints (CalcualtePointsRequest) returns (CalculatePointsResponse);
+}
+
+message GetQuestionsRequest {}
+
+message GetQuestionsResponse {
+	message Question {
+		int64 numId = 1;
+		string text = 2;
+		repeated string answers = 3;
+		string correctAnswer = 4;
+	}
+
+	repeated Question questions = 1;
+}
+
+message CalcualtePointsRequest {
+	message Answer {
+		int64 numId = 1;
+		string answer = 2;
+	}
+
+	repeated Answer answers = 1;
+}
+
+message CalculatePointsResponse {
+	int32 points = 1;
+}

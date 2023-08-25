@@ -10,7 +10,7 @@ namespace WhoKnowsKnows.Common.Repositories.Interfaces
 
         Task<Question> GetQuestion(string id);
 
-        Task<Question> GetQuestion(long numId);
+        Task<GetQuestionDTO> GetQuestion(long numId);
 
         Task<bool> DeleteQuestion(string id);
     }

@@ -17,8 +17,8 @@ namespace WhoKnowsKnows.Controllers
         }
 
         [HttpGet(Name = "GetQuestions")]
-        [ProducesResponseType(typeof(IEnumerable<Question>), StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
+        [ProducesResponseType(typeof(IEnumerable<GetQuestionDTO>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<GetQuestionDTO>>> GetQuestions()
         {
 
             var random  =  new Random();
@@ -34,7 +34,7 @@ namespace WhoKnowsKnows.Controllers
                 indices.Add(newNumber);
             }
 
-            var questions = new List<Question>();
+            var questions = new List<GetQuestionDTO>();
 
             foreach (long index in indices)
             {
@@ -68,7 +68,7 @@ namespace WhoKnowsKnows.Controllers
         [Route("[action]")]
         [HttpPost]
         [ProducesResponseType(typeof(IEnumerable<Question>), StatusCodes.Status201Created)]
-        public async Task<ActionResult<Question>> CreateQuestion([FromBody] QuestionDTO questionDto)
+        public async Task<ActionResult<Question>> CreateQuestion([FromBody] CreateQuestionDTO questionDto)
         {
             if (questionDto.Answers.Count != 3)
                 throw new InvalidDataException("Answers list must have 3 elements!");
