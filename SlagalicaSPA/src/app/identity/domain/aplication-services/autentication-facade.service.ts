@@ -38,12 +38,15 @@ export class AutenticationFacadeService {
         this.appStateService.setUsername(payload[JwtPayloadKeys.Username]);
         this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
         this.appStateService.setRole(payload[JwtPayloadKeys.Role]);
+        this.appStateService.setNumbersOfGames(payload[JwtPayloadKeys.PlayedGames], payload[JwtPayloadKeys.WonGames]);
 
         console.log("payload ")
         console.log(payload)
         console.log(payload[JwtPayloadKeys.Username])
         console.log(payload[JwtPayloadKeys.Email])
         console.log(payload[JwtPayloadKeys.Role])
+        console.log(payload[JwtPayloadKeys.PlayedGames])
+        console.log(payload[JwtPayloadKeys.WonGames])
 
         return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
       }),
@@ -64,7 +67,7 @@ export class AutenticationFacadeService {
 
 
   public register(username: string, password: string, email: string, firstName: string, lastName: string)  : Observable<boolean> {
-    const request : IRegisterRequest = {username, password, email, firstName, lastName, phoneNumber:''};
+    const request : IRegisterRequest = {username, password, email, firstName, lastName, playedGames:0, wonGames: 0};
     console.log("request ")
     console.log(request)
     return this.autenticationService.register(request).pipe(
@@ -78,6 +81,7 @@ export class AutenticationFacadeService {
         this.appStateService.setUsername(payload[JwtPayloadKeys.Username]);
         this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
         this.appStateService.setRole(payload[JwtPayloadKeys.Role]);
+        this.appStateService
 
         console.log("payload ")
         console.log(payload)

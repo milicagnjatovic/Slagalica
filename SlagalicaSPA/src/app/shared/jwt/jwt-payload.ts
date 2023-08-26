@@ -5,6 +5,8 @@ export interface IJwtPayload {
     [JwtPayloadKeys.Username]: string;
     [JwtPayloadKeys.Email]: string;
     [JwtPayloadKeys.Role]: Role | Role[];
+    [JwtPayloadKeys.PlayedGames]: number,
+    [JwtPayloadKeys.WonGames]: number,
     exp: number;
     iss: string;
     aud: string;

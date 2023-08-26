@@ -78,6 +78,14 @@ export class AppStateService {
     this.localStorageService.set(LocalStorageKeys.AppState, this.appState);
   }
 
+  public setNumbersOfGames(played: number, won: number): void {
+    this.appState = this.appState.clone();
+    this.appState.playedGames = played;
+    this.appState.wonGames = won;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState, this.appState);
+  }
+
   public clearAppState(): void {
     this.localStorageService.clear(LocalStorageKeys.AppState); 
     this.appState = new AppState();
@@ -95,7 +103,9 @@ export class AppStateService {
           appState.roles,
         appState.firstName,
          appState.lastName, 
-         appState.userId);
+         appState.userId,
+         appState.wonGames,
+         appState.wonGames);
       this.appStateSubject.next(this.appState);
     }
   }

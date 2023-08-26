@@ -4,17 +4,18 @@ export interface IRegisterRequest {
     email: string, 
     firstName: string, 
     lastName: string,
-    phoneNumber: string
+    playedGames: number,
+    wonGames: number,
 }
 
 export class RegisterRequest implements IRegisterRequest {
-    public phoneNumber: string;
     public constructor(
         public username: string, 
         public password: string, 
         public email: string,
         public firstName: string,
-        public lastName: string){
-            this.phoneNumber = '123456788';
+        public lastName: string,
+        public playedGames: number = 0,
+        public wonGames: number = 0){
     }
 }

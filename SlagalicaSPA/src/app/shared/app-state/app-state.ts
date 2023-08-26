@@ -11,6 +11,9 @@ export interface IAppState {
     lastName?: string;
     userId?: string
 
+    playedGames?: number;
+    wonGames?: number;
+
     hasRole(role: Role) : boolean;
     clone(): IAppState;
     isEmpty():boolean;
@@ -27,14 +30,19 @@ export class AppState implements IAppState{
     public lastName?: string;
     public userId?: string;
 
+    public playedGames?: number;
+    public wonGames?: number;
+
     public constructor();
     public constructor(accessToken?: string, refreshToken?: string, username?: string, email?: string, roles?: Role | Role[],
-        firstName?:string, lastName?:string, userId?: string);
+        firstName?:string, lastName?:string, userId?: string, playedGames?: number, wonGames?: number);
 
     public constructor(...args: any[]){
+        console.log('Args', args);
+
         if(args.length == 0){
             return
-        }
+        }        
         else if(args.length >= 5){
             this.accessToken = args[0]; 
             this.refreshToken = args[1];
@@ -44,6 +52,8 @@ export class AppState implements IAppState{
             this.firstName = args[5];
             this.lastName = args[6];
             this.userId = args[7];
+            this.wonGames = args[8];
+            this.playedGames = args[9];
         }
     }
 
