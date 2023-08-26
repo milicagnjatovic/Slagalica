@@ -80,6 +80,8 @@ public class AuthenticationService : IAuthenticationService
         {
             new(ClaimTypes.Name, user.UserName),
             new(ClaimTypes.Email, user.Email),
+            new("PlayedGames", user.NumberOfPlayedGames.ToString()),
+            new("WonGames", user.NumberOfWonGames.ToString())
         };
 
         var roles = await _userManager.GetRolesAsync(user);

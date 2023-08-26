@@ -18,6 +18,4 @@ public class NewUserDto
 
     [Required(ErrorMessage = "ErrorMessage is required")]
     public string Email { get; set; }
-
-    public string PhoneNumber { get; set; }
 }
