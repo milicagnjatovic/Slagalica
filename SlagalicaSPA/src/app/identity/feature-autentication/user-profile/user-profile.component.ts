@@ -17,7 +17,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    this.appStateOb = this.appStateService.getAppState();
   }
 
 }

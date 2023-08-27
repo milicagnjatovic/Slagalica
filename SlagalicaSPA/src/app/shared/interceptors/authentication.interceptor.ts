@@ -18,6 +18,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     '/api/v1/Authentication/Login',
     '/api/v1/Authentication/Refresh',
     '/api/v1/Authentication/User',
+    '/api/v1/Authentication/AddPlayedGames',
   ];
 
   private isRefreshing: boolean = false;

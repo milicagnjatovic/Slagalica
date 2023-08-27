@@ -11,6 +11,11 @@ export class GameServerService {
   private serverUrl: string = 'http://localhost:5274/gameServer';
   private serverConnection: singalR.HubConnection;
 
+  public currentGame: string = '';
+
+  public points: number = 0;
+
+  // who-knows
   public whoKnows: Question[] = [];
 
   constructor() {
@@ -63,4 +68,9 @@ export class GameServerService {
   public waitingForTheGame() : boolean{
     return this.whoKnows.length==0;
   }
+
+  public setCurrentGame(nextGame: string){
+    this.currentGame = nextGame;
+  }
+
 }

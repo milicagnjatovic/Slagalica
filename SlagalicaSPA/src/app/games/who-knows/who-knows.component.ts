@@ -32,7 +32,7 @@ export class WhoKnowsComponent implements OnInit{
   public response = '';
   public show = "display: none"
 
-  constructor (private gameService : GameServerService) {
+  constructor (public gameService : GameServerService) {
     this.questions = [
       // new Question('q1', ['w11', 'w12', 'w13'], 'c'),
       // new Question('q2', ['w21', 'w22', 'w23'], 'c'),
@@ -50,7 +50,8 @@ export class WhoKnowsComponent implements OnInit{
 
       this.gameService.sendMessage(
         'SubmitWhoKnowsKnows', 
-        JSON.stringify(this.answers))
+        JSON.stringify(this.answers));
+
       return;
     }
     this.show = this.show + 'none'

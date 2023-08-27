@@ -13,6 +13,7 @@ import { ILogoutRequest } from '../model/logout-request';
 import { IRefreshTokenRequest } from '../model/refresh-token-request.service';
 import { IRefreshTokenResponse } from '../model/refresh-token-response';
 import { IRegisterRequest } from '../model/register-request';
+import { IUpdateuserRequest } from '../model/update-user-request';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,8 @@ export class AutenticationFacadeService {
         console.log(payload[JwtPayloadKeys.Username])
         console.log(payload[JwtPayloadKeys.Email])
         console.log(payload[JwtPayloadKeys.Role])
+        console.log(payload[JwtPayloadKeys.PlayedGames])
+        console.log(payload[JwtPayloadKeys.WonGames])
 
         return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
       }),
@@ -145,5 +148,46 @@ export class AutenticationFacadeService {
         return of(null);
       })
       );
+  }
+
+  public gameOverUserUpdate(): Observable<boolean>{
+    const request : IUpdateuserRequest = this.appStateService.getUserDto();
+    console.log("request ")
+    console.log(request)
+    return this.autenticationService.gameOverUserUpdate(request).pipe(
+      switchMap( (loginResponse: ILoginResponse) => { 
+        console.log(loginResponse);
+        this.appStateService.setAccessToken(loginResponse.accessToken);
+        this.appStateService.setRefreshToken(loginResponse.refreshToken);
+
+        const payload = this.jwtService.parsePayload(loginResponse.accessToken);
+        this.appStateService.setUsername(payload[JwtPayloadKeys.Username]);
+        this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
+        this.appStateService.setRole(payload[JwtPayloadKeys.Role]);
+        this.appStateService.setNumbersOfGames(payload[JwtPayloadKeys.PlayedGames], payload[JwtPayloadKeys.WonGames]);
+
+        console.log("payload ")
+        console.log(payload)
+        console.log(payload[JwtPayloadKeys.Username])
+        console.log(payload[JwtPayloadKeys.Email])
+        console.log(payload[JwtPayloadKeys.Role])
+        console.log(payload[JwtPayloadKeys.PlayedGames])
+        console.log(payload[JwtPayloadKeys.WonGames])
+
+        return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
+      }),
+      map((userDetails: IUserDetails) => {
+        this.appStateService.setFirstName(userDetails.firstName);
+        this.appStateService.setLastName(userDetails.lastName);
+        this.appStateService.setUserId(userDetails.id);
+        return true;
+      }),
+      catchError((err) => {
+        console.error('AutenticationFacadeService:')
+        console.error(err);
+        this.appStateService.clearAppState();
+        return of(false);
+      })
+    );
   }
 }

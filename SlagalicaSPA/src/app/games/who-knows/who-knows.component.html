@@ -1,5 +1,5 @@
 <div class="gameBox">
-    <h1>Who-knows</h1>
+    <h1> {{ this.gameService.currentGame }}</h1>
     <table *ngIf="this.questions[this.currentQuestion] != undefined; else gameOver">
         <tr>
             <td colspan="2">Question: {{ this.questions[this.currentQuestion].question }}</td>

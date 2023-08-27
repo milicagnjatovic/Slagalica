@@ -7,6 +7,7 @@ import { ILogoutRequest } from '../model/logout-request';
 import { IRefreshTokenRequest } from '../model/refresh-token-request.service';
 import { IRefreshTokenResponse } from '../model/refresh-token-response';
 import { IRegisterRequest } from '../model/register-request';
+import { IUpdateuserRequest } from '../model/update-user-request';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +35,8 @@ export class AutenticationService {
   public refreshToken(request: IRefreshTokenRequest) : Observable<IRefreshTokenResponse>{
      return this.httpClient.post<IRefreshTokenResponse>(`${this.url}/refresh`, request);
   }
+
+  public gameOverUserUpdate(request: IUpdateuserRequest): Observable<ILoginResponse>{
+    return this.httpClient.post<ILoginResponse>(`${this.url}/AddPlayedGames`, request);
+  }
 }
-
-///api/v1/Autentication/Login
-
-// {"accessToken": "12345", "refreshAccessToken": "12345"}

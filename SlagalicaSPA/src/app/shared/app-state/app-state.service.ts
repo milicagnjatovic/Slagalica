@@ -4,6 +4,7 @@ import { LocalStorageKeys } from '../local-storage/local-storage-keys';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { AppState, IAppState } from './app-state';
 import { Role } from './roles';
+import { IUpdateuserRequest } from '../../identity/domain/model/update-user-request'
 
 @Injectable({
   providedIn: 'root'
@@ -97,16 +98,21 @@ export class AppStateService {
     if(appState != null){
       this.appState = new AppState(
         appState.accessToken,
-         appState.refreshToken, 
-         appState.username,
-          appState.email, 
-          appState.roles,
+        appState.refreshToken, 
+        appState.username,
+        appState.email, 
+        appState.roles,
         appState.firstName,
-         appState.lastName, 
-         appState.userId,
-         appState.wonGames,
-         appState.wonGames);
+        appState.lastName, 
+        appState.userId,
+        appState.wonGames,
+        appState.playedGames);
       this.appStateSubject.next(this.appState);
     }
+  }
+
+  public getUserDto (): IUpdateuserRequest{
+    let updateReq: IUpdateuserRequest = { userName: this.appState.username ? this.appState.username : '',  isWin: true };
+    return updateReq;
   }
 }
