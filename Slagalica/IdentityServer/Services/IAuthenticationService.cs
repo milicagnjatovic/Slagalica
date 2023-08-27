@@ -8,4 +8,7 @@ public interface IAuthenticationService
     Task<User?> ValidateUser(UserCredentialsDto userCredentials);
     Task<AuthenticationModel> CreateAuthenticationModel(User user);
     Task RemoveRefreshToken(User user, string refreshToken);
+    Task UpdateUser(User user);
+    Task<User?> GetUser(String username);
+
 }

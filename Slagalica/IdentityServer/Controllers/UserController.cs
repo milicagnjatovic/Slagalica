@@ -24,7 +24,7 @@ public class UserController : ControllerBase
         _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
     }
 
-    [Authorize(Roles = Roles.Admin)]
+     [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<UserDetailsDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<UserDetailsDto>>> GetAllUsers()

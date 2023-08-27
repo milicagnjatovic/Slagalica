@@ -57,6 +57,16 @@ public class AuthenticationService : IAuthenticationService
         await _dbContext.SaveChangesAsync();
     }
 
+    public async Task UpdateUser(User user)
+    {
+        await _userManager.UpdateAsync(user);
+    }
+    
+    public async Task<User?> GetUser(String username)
+    {
+        return await _userManager.FindByNameAsync(username);
+    }
+
     private async Task<string> CreateAccessToken(User user)
     {
         var signingCredentials = GetSigningCredentials();

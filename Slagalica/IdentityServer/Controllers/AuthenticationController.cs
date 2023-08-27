@@ -104,4 +104,25 @@ public class AuthenticationController : RegistrationControllerBase
 
         return Accepted();
     }
+    
+    [HttpPost("[action]")]
+    [ProducesResponseType(typeof(UserDetailsDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> AddPlayedGames([FromBody] UpdateUser data)
+    {
+        var user = await _authService.GetUser(data.userName);
+        
+        if (user is null)
+        {
+            _logger.LogWarning("Failed to save played game.", nameof(AddPlayedGames));
+            return Unauthorized();
+        }
+        user.NumberOfPlayedGames = user.NumberOfPlayedGames + 1;
+        if (data.IsWin)
+        {
+            user.NumberOfWonGames = user.NumberOfWonGames + 1;
+        }
+
+        await _authService.UpdateUser(user);
+        return Ok(await _authService.CreateAuthenticationModel(user));
+    }
 }
