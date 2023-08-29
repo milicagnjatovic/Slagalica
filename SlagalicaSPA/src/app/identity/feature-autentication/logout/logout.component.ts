@@ -14,10 +14,11 @@ export class LogoutComponent implements OnInit {
 
   constructor(private authenticationService: AutenticationFacadeService, private router: Router){
     this.logoutSuccess = this.authenticationService.logout();
+    this.logoutSuccess.subscribe();
     router.navigate(['/'])
   }
 
   ngOnInit(): void {
     
-  }
+    }
 }
