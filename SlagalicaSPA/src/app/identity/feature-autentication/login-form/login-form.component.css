@@ -1,0 +1,23 @@
+form {
+    background-color: #2a9d8f;
+    width: 50%;
+    height: 50vh;
+    padding: 0px;
+    border-radius: 10px;
+    position: absolute;
+    top: 25vh;
+    right: 25%;
+    padding: 5vh;
+    overflow-y: scroll;
+}
+
+input {
+    width: 80%;
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+div{
+    margin: 20px;
+}
