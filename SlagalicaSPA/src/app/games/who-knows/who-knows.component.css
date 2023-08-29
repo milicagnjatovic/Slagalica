@@ -1,0 +1,38 @@
+/* .gameBox {
+    background-color: #264653;
+    width: 80%;
+    height: 80vh;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    position: fixed;
+    top: 10vh;
+    right: 10vw;
+} */
+
+* {
+    color: #2a9d8f;
+}
+
+table {
+    width: 80%;
+    margin: auto;
+}
+
+td {
+    border: solid #2a9d8f 4px;
+    width: 40%;
+    height: 30px;
+}
+
+td:hover {
+    background-color: #2a9d8f;
+    color: #264653;
+}
+
+tr:nth-child(1) td:nth-child(1) {
+    font-size: 150%;
+    background-color: #2a9d8f;
+    color: #264653;
+    font-weight: bold;
+}
