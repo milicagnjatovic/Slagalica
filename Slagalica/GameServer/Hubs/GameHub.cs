@@ -1,82 +1,61 @@
 ﻿using GameServer.Entities;
+using GameServer.GrpcServices;
 using GameServer.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace GameServer.Hubs
 {
     public class GameHub : Hub<IGameClient>
     {
-        private IGameRepository _repository;
+        private readonly IGameRepository _repository;
+        private readonly WhoKnowsKnowsGrpcService _whoKnowsKnowsGrpcService;
         public int numberOfClients { get; set; }
 
-        public GameHub(IGameRepository repository)
+        public GameHub(IGameRepository repository, WhoKnowsKnowsGrpcService whoKnowsKnowsGrpcService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _whoKnowsKnowsGrpcService = whoKnowsKnowsGrpcService ?? throw new ArgumentNullException(nameof(whoKnowsKnowsGrpcService));
             numberOfClients = 0;
         }
 
-        public string GetMatches()
+        public async Task<string> GetWhoKnowsKnows()
         {
-            // Just a placeholder, will be replaced with an API call.
-            return "[{\"first\": \"Michael\"  \"second\": \"Jordan\"}]";
-        }
-
-        public string GetAssociations()
-        {
-            // Just a placeholder, will be replaced with an API call.
-            return "[{\"a\": \"liquid}\"  \"b\": \"H2O\" \"c\": \"drink\"  \"d\": \"drop\"  \"column_answer\": \"water\"]";
-        }
-
-        public string GetWhoKnowsKnows()
-        {
-            // Just a placeholder, will be replaced with an API call.
-            return "{ " +
-                "\"question\": \"what is the captial of Canada?\", " +
-                "\"a\": \"Ottawa\", " +
-                "\"b\": \"Montreal\", " +
-                "\"c\": \"Vancouver\", " +
-                "\"d\": \"Toronto\", " +
-                "\"correct\": \"Ottawa\"" +
-                "}";
+            var response = await _whoKnowsKnowsGrpcService.GetQuestions();
+            return JsonSerializer.Serialize(response).ToString();
         }
 
         // Function for testing program, will be removed later
         public async Task TestWhoKnowsKnows()
         {
             Console.WriteLine("Invoking Test method...");
-            await Clients.All.SendWhoKnowsKnows(GetWhoKnowsKnows());
+            await Clients.All.SendWhoKnowsKnows(await GetWhoKnowsKnows());
         }
 
-        public int CalculateWhoKnowsKnows(string answers)
+        public async Task<int> CalculateWhoKnowsKnows(string answers)
         {
-            // Just a placeholder, will be replaced with an API call.
-            return 10;
+            var response = await _whoKnowsKnowsGrpcService.CalculatePoints(answers);
+            return response.Points;
         }
 
-        public int CalculateMatches(string answers)
+        public async Task Submit(string answers, Func<string, Task<int>> calculatePointsFunction, Func<string> getGameFunction, Func<string, Task> sendGameFunc, string currentGame)
         {
-            // Just a placeholder, will be replaced with an API call.
-            return 10;
-        }
-
-        public int CalculateAssociations(string answers)
-        {
-            // Just a placeholder, will be replaced with an API call.
-            return 10;
-        }
-
-        public async Task Submit(string answers, Func<string, int> calculatePointsFunction, Func<string> getGameFunction, Func<string, Task> sendGameFunc, string currentGame)
-        {
+            // Find the game based on the connectionId.
             var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
 
+            // Find which player of the two has submitted the game.
             var thisPlayer = Context.ConnectionId == game.Player1.ConnectionId ? game.Player1 : game.Player2;
             var otherPlayer = Context.ConnectionId == game.Player1.ConnectionId ? game.Player2 : game.Player1;
 
+            // Check the field that the game is submitted.
             thisPlayer.Submitted[currentGame] = true;
-            var pointsWon = calculatePointsFunction(answers);
+
+            // Calculate the points won in the game and add it to his score.
+            var pointsWon = await calculatePointsFunction(answers);
             thisPlayer.Points += pointsWon;
 
+            // If the other player has sbumitted his game also, get the next game or calculate the winner.
             if (otherPlayer.Submitted[currentGame])
             {
                 await Clients.Client(thisPlayer.ConnectionId).SendPoints(thisPlayer.Points, otherPlayer.Points);
@@ -91,21 +70,7 @@ namespace GameServer.Hubs
         {
             var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
             if (game != null)
-                await Submit(answers, CalculateWhoKnowsKnows, GetMatches, Clients.Group(game.Id).SendMatches, "WhoKnowsKnows");
-        }
-
-        public async Task SubmitMatches(string answers) 
-        {
-            var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
-            if (game != null)
-                await Submit(answers, CalculateMatches, GetAssociations, Clients.Group(game.Id).SendAssociations, "Matches");
-        }
-
-        public async Task SubmitAssociations(string answers)
-        {
-            var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
-            if (game != null)
-                await Submit(answers, CalculateAssociations, game.getWinnerMessage, Clients.Group(game.Id).SendOutcomeMessage, "Associations");
+                await Submit(answers, CalculateWhoKnowsKnows, game.getWinnerMessage, Clients.Group(game.Id).SendOutcomeMessage, "WhoKnowsKnows");
         }
 
         public override async Task OnConnectedAsync()
@@ -114,7 +79,9 @@ namespace GameServer.Hubs
             numberOfClients++;
             Console.WriteLine("Current number of clients: " + numberOfClients);
             Console.WriteLine("Current repository size: " + _repository.Games.Count);
+            // Find if there is someone waiting for a match.
             var game = _repository.Games.FirstOrDefault(g => !g.InProgress);
+            // If not, create a new game.
             if (game == null)
             {
                 Console.WriteLine("Creating empty game...");
@@ -124,18 +91,21 @@ namespace GameServer.Hubs
                 Console.WriteLine("Adding game to repository");
                 _repository.Games.Add(game);
             } else {
+                // If yes, then add the connected player to that game and set the game in progress.
                 Console.WriteLine("Adding player to already setup game");
                 game.Player2.ConnectionId = Context.ConnectionId;
                 game.InProgress = true;
             }
 
             Console.WriteLine("Adding player to game group");
+            // Add him to the group.
             await Groups.AddToGroupAsync(Context.ConnectionId, game.Id);
             await base.OnConnectedAsync();
 
+            // If the game is initiated send the game to the clients.
             if (game.InProgress) {
                 Console.WriteLine("Sending games to clients");
-                var questionsJson = GetWhoKnowsKnows();
+                var questionsJson = await GetWhoKnowsKnows();
                 await Clients.Group(game.Id).SendWhoKnowsKnows(questionsJson);
             }
 
@@ -146,9 +116,12 @@ namespace GameServer.Hubs
         {
             Console.WriteLine("Disconnecting with client...");
             numberOfClients--;
+            // Find the game the player disconnected on.
             var game = _repository.Games.FirstOrDefault(g => g.Player1.ConnectionId == Context.ConnectionId || g.Player2.ConnectionId == Context.ConnectionId);
             if (!(game == null)) {
+                // Remove the player from the group.
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, game.Id);
+                // Concede the game and remove it from the repository.
                 await Clients.Group(game.Id).Concede();
                 _repository.Games.Remove(game);
             }

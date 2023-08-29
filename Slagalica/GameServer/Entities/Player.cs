@@ -13,8 +13,6 @@
             Points = 0;
  
             Submitted["WhoKnowsKnows"] = false;
-            Submitted["Matches"] = false;
-            Submitted["Associations"] = false;
         }
     }
 }
