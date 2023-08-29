@@ -1,0 +1,17 @@
+
+<header>
+
+    <div *ngIf="appStateOb | async as appState">
+        <div *ngIf="!appState.isEmpty(); else notLoggedIn">
+            <a [routerLink]="['/logout']"><button id="logout">logout</button></a>
+        </div>
+
+        <ng-template #notLoggedIn>
+            <a [routerLink]="['login']"><button id="login">login</button></a>
+            <a [routerLink]="['register']"><button id="register">register</button></a>
+        </ng-template>
+    </div>
+
+
+    <router-outlet></router-outlet> 
+</header>
