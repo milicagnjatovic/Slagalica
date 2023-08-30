@@ -2,15 +2,15 @@
     <h1> {{ this.gameService.currentGame }}</h1>
     <table *ngIf="this.questions[this.currentQuestion] != undefined; else gameOver">
         <tr>
-            <td colspan="2">Question: {{ this.questions[this.currentQuestion].question }}</td>
+            <td colspan="2">Question: {{ this.questions[this.currentQuestion].Text }}</td>
         </tr>
         <tr>
-            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].answers[0]}}</td>
-            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].answers[1]}}</td>
+            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].Answers[0]}}</td>
+            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].Answers[1]}}</td>
         </tr>
         <tr>
-            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].answers[2]}}</td>
-            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].answers[3]}}</td>
+            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].Answers[2]}}</td>
+            <td (click)="checkAnswer($event)">{{this.questions[this.currentQuestion].Answers[3]}}</td>
         </tr> 
         <tr>
             <td colspan="2" [style]="this.show" (click) = 'setNextQuestion()'> {{ response }} </td>

@@ -19,7 +19,7 @@ export class GamesComponent implements OnInit, OnDestroy {
 
     this.gameServerService.onReceiveMessage('SendWhoKnowsKnows', (message: string) => {
       console.log('Questions sent ', JSON.parse(message) as Question[]);
-      this.gameServerService.setWhoKnows(JSON.parse(message) as Question[]);
+      this.gameServerService.setWhoKnows(JSON.parse(message) as {Questions: Question[]});
       this.gameServerService.setCurrentGame('Ko zna zna');
       this.router.navigate(['play', 'who-knows'])
       }

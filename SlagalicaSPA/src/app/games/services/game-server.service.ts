@@ -42,14 +42,19 @@ export class GameServerService {
     this.serverConnection.stop().catch(err => console.error(err));
   }
 
-  public setWhoKnows(questions : Question[]){
-    for(let question of questions){
+  public setWhoKnows(questions : {Questions: Question[]}){
+    console.log('hello')
+    console.log(JSON.stringify(questions))
+    console.log(typeof questions)
+    for(let question of questions.Questions){
+      console.log(this.whoKnows)
       this.whoKnows.push(
         new Question(
-          question.numId,
-          question.question, 
-          question.answers,
-          question.correctAnswer)
+          question.NumId,
+          question.Text, 
+          question.Answers,
+          question.CorrectAnswer
+          )
       );
 
     }
