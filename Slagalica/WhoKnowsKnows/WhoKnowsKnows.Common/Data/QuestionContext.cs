@@ -12,8 +12,10 @@ namespace WhoKnowsKnows.Common.Data
 
         public QuestionContext(IConfiguration configuration)
         {
-            //var client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
-            var client = new MongoClient(connectionString);
+            var client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+            if (client == null) 
+               client = new MongoClient(connectionString);
+
             var database = client.GetDatabase("QuestionDB");
 
             Questions = database.GetCollection<Question>("Questions");

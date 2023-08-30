@@ -1,0 +1,38 @@
+version: '3.4'
+
+services:
+  questiondb:
+    image: mongo
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  gameserver:
+    image: ${DOCKER_REGISTRY-}gameserver
+    build:
+      context: .
+      dockerfile: GameServer/Dockerfile
+
+  whoknowsknows.api:
+    image: ${DOCKER_REGISTRY-}whoknowsknowsapi
+    build:
+      context: .
+      dockerfile: WhoKnowsKnows/WhoKnowsKnows.API/Dockerfile
+
+  whoknowsknows.grpc:
+    image: ${DOCKER_REGISTRY-}whoknowsknowsgrpc
+    build:
+      context: .
+      dockerfile: WhoKnowsKnows/WhoKnowsKnows.GRPC/Dockerfile
+
+
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    build:
+      context: .
+      dockerfile: IdentityServer/Dockerfile
+
+volumes:
+  mongo_data:
+  mssql_data:
+
