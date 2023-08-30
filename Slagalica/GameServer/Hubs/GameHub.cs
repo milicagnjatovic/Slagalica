@@ -53,6 +53,7 @@ namespace GameServer.Hubs
 
             // Calculate the points won in the game and add it to his score.
             var pointsWon = await calculatePointsFunction(answers);
+            Console.WriteLine("Player: " + thisPlayer.Name + "won " + pointsWon + " points.");
             thisPlayer.Points += pointsWon;
 
             // If the other player has sbumitted his game also, get the next game or calculate the winner.
