@@ -1,13 +1,13 @@
 
 export class Question {
     constructor(
-        public numId: number,
-        public question: string,
-        public answers: string[],
-        public correctAnswer: string,
+        public NumId: number,
+        public Text: string,
+        public Answers: string[],
+        public CorrectAnswer : string,
     ) {
-        this.answers.push(correctAnswer);
-        this.answers.sort(
+        this.Answers.push(CorrectAnswer);
+        this.Answers.sort(
             () => Math.random() - 0.5
         )
 
@@ -15,8 +15,8 @@ export class Question {
 
     public addCorrectAnswerToAnswers(){
         console.log('start')
-        this.answers.push(this.correctAnswer);
-        this.answers.sort(
+        this.Answers.push(this.CorrectAnswer);
+        this.Answers.sort(
             () => Math.random() - 0.5
         );
         console.log('end')

@@ -50,7 +50,7 @@ export class WhoKnowsComponent implements OnInit{
 
       this.gameService.sendMessage(
         'SubmitWhoKnowsKnows', 
-        JSON.stringify(this.answers));
+        JSON.stringify({answers: this.answers}));
 
       return;
     }
@@ -64,12 +64,12 @@ export class WhoKnowsComponent implements OnInit{
     }
 
     let clicked = (event.target as HTMLButtonElement).innerHTML;
-    this.answers.push(new Answer(this.questions[this.currentQuestion].numId, clicked));
-    if (clicked == this.questions[this.currentQuestion].correctAnswer) {
+    this.answers.push(new Answer(this.questions[this.currentQuestion].NumId, clicked));
+    if (clicked == this.questions[this.currentQuestion].CorrectAnswer) {
       this.points = this.points + 1;
       this.response = 'Odlicno! >'
     } else {
-      this.response = `Pogresno, tacan odgovor je: ${this.questions[this.currentQuestion].correctAnswer} >`
+      this.response = `Pogresno, tacan odgovor je: ${this.questions[this.currentQuestion].CorrectAnswer} >`
     }
     this.show = this.show.replace('none', '')
   }

@@ -3,3 +3,13 @@ button {
     border: solid #2a9d8f 4px;
     width: 80%;
 }
+
+table {
+    width: 80%;
+    margin: auto;
+}
+
+td {
+    color: #2a9d8f;
+
+}

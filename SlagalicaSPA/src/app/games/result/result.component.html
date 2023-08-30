@@ -1,6 +1,16 @@
 <div class="gameBox">
     <h1>Rezultati</h1>
-    <h1>Poeni: {{ this.gameService.points }}</h1>
+
+    <table>
+        <tr>
+            <td>Ja:</td>
+            <td> {{ this.gameService.points }}</td>
+        </tr>
+        <tr>
+            <td>Protivnik:</td>
+            <td> {{ this.gameService.opponentsPoints }}</td>
+        </tr>
+    </table>
 
     <a href=""></a>
     <a [routerLink]="['/profile']"><button id="register">Nazad</button></a>

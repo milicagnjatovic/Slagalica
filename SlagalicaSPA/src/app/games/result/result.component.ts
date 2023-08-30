@@ -13,12 +13,13 @@ export class ResultComponent implements OnInit {
     private router: Router) {}
 
   ngOnInit() {
-    this.authenticationService.gameOverUserUpdate().subscribe(
+    let win : boolean = this.gameService.points > this.gameService.opponentsPoints;
+    this.authenticationService.gameOverUserUpdate(win).subscribe(
       (success: boolean) => {
         if(success) {
-          this.router.navigate(['/profile']);
+          // this.router.navigate(['/profile']);
         } else {
-          window.alert('Wrong credentials. Try again!')
+          window.alert('Error occured!')
         }
       }
     );

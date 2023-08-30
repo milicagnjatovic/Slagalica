@@ -14,6 +14,7 @@ export class GameServerService {
   public currentGame: string = '';
 
   public points: number = 0;
+  public opponentsPoints = 0;
 
   // who-knows
   public whoKnows: Question[] = [];
@@ -42,26 +43,38 @@ export class GameServerService {
     this.serverConnection.stop().catch(err => console.error(err));
   }
 
-  public setWhoKnows(questions : Question[]){
-    for(let question of questions){
+  public setWhoKnows(questions : {Questions: Question[]}){
+    console.log('hello')
+    console.log(JSON.stringify(questions))
+    console.log(typeof questions)
+    for(let question of questions.Questions){
+      console.log(this.whoKnows)
       this.whoKnows.push(
         new Question(
-          question.numId,
-          question.question, 
-          question.answers,
-          question.correctAnswer)
+          question.NumId,
+          question.Text, 
+          question.Answers,
+          question.CorrectAnswer
+          )
       );
 
     }
   }
 
   sendMessage(typeOfMessage:string, message: string) {
+    console.log("Message for server ", message)
     this.serverConnection.invoke(typeOfMessage, message);
   }
 
   onReceiveMessage(typeOfMessage:string, callback: (message: string) => void) {
     this.serverConnection.on(typeOfMessage, (message: string) => {
       callback(message);
+    })
+  }
+
+  onReceiveTwoNumbers(typeOfMessage:string, callback: (x: number, y : number) => void) {
+    this.serverConnection.on(typeOfMessage, (x: number, y : number) => {
+      callback(x, y);
     })
   }
 

@@ -111,8 +111,8 @@ export class AppStateService {
     }
   }
 
-  public getUserDto (): IUpdateuserRequest{
-    let updateReq: IUpdateuserRequest = { userName: this.appState.username ? this.appState.username : '',  isWin: true };
+  public getUserDto (isWin: boolean): IUpdateuserRequest{
+    let updateReq: IUpdateuserRequest = { userName: this.appState.username ? this.appState.username : '',  isWin };
     return updateReq;
   }
 }
