@@ -25,7 +25,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "GrpcSettings:WhoKnowsKnowsUrl=http://whoknowsknows.grpc" 
     ports:
-      - "5274:5274"
+      - "5274:80"
 
   whoknowsknows.api:
     container_name: whoknowsknows.api
@@ -35,7 +35,7 @@ services:
     depends_on:
       - questiondb
     ports:
-      - "5005:5005"
+      - "5005:80"
 
   whoknowsknows.grpc:
     container_name: whoknowsknows.grpc
@@ -45,7 +45,7 @@ services:
     depends_on:
       - questiondb
     ports:
-      - "5001:5001"
+      - "5001:80"
 
 
   identityserver:
