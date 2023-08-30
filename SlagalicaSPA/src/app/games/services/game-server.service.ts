@@ -61,6 +61,7 @@ export class GameServerService {
   }
 
   sendMessage(typeOfMessage:string, message: string) {
+    console.log("Message for server ", message)
     this.serverConnection.invoke(typeOfMessage, message);
   }
 

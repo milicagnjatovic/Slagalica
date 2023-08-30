@@ -50,7 +50,7 @@ export class WhoKnowsComponent implements OnInit{
 
       this.gameService.sendMessage(
         'SubmitWhoKnowsKnows', 
-        JSON.stringify(this.answers));
+        JSON.stringify({answers: this.answers}));
 
       return;
     }
