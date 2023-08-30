@@ -150,8 +150,8 @@ export class AutenticationFacadeService {
       );
   }
 
-  public gameOverUserUpdate(): Observable<boolean>{
-    const request : IUpdateuserRequest = this.appStateService.getUserDto();
+  public gameOverUserUpdate(isWin:boolean): Observable<boolean>{
+    const request : IUpdateuserRequest = this.appStateService.getUserDto(isWin);
     console.log("request ")
     console.log(request)
     return this.autenticationService.gameOverUserUpdate(request).pipe(

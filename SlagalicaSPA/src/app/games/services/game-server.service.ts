@@ -14,6 +14,7 @@ export class GameServerService {
   public currentGame: string = '';
 
   public points: number = 0;
+  public opponentsPoints = 0;
 
   // who-knows
   public whoKnows: Question[] = [];
@@ -68,6 +69,12 @@ export class GameServerService {
   onReceiveMessage(typeOfMessage:string, callback: (message: string) => void) {
     this.serverConnection.on(typeOfMessage, (message: string) => {
       callback(message);
+    })
+  }
+
+  onReceiveTwoNumbers(typeOfMessage:string, callback: (x: number, y : number) => void) {
+    this.serverConnection.on(typeOfMessage, (x: number, y : number) => {
+      callback(x, y);
     })
   }
 
