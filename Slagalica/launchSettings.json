@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "gameserver": "StartDebugging",
+        "whoknowsknows.api": "StartDebugging",
+        "whoknowsknows.grpc": "StartDebugging",
+        "identityserver": "StartDebugging"
+      }
+    }
+  }
+}
