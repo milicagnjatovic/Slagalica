@@ -1,5 +1,7 @@
+using IdentityServer.Data;
 using IdentityServer.Extensions;
 using IdentityServer.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,8 @@ builder.Services.AddSwaggerGen();
 // We replaced this with builder.Services.ConfigureJWT()
 // builder.Services.AddAuthentication();
 
-builder.Services.ConfigurePersistence(builder.Configuration);
+var serviceProvider = builder.Services.ConfigurePersistence(builder.Configuration);
+
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.ConfigureMiscellaneousServices();
@@ -34,6 +37,16 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+// Migrate latest database changes during startup
+using (var scope = serviceProvider.BuildServiceProvider().CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ApplicationContext>();
+    
+    // Here is the migration executed
+    dbContext.Database.Migrate();
+}
 
 app.UseCors("AllowAngularApp");
 
