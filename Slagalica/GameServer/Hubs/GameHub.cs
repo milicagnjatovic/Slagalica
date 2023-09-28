@@ -26,13 +26,6 @@ namespace GameServer.Hubs
             return JsonSerializer.Serialize(response).ToString();
         }
 
-        // Function for testing program, will be removed later
-        public async Task TestWhoKnowsKnows()
-        {
-            Console.WriteLine("Invoking Test method...");
-            await Clients.All.SendWhoKnowsKnows(await GetWhoKnowsKnows());
-        }
-
         public async Task<int> CalculateWhoKnowsKnows(string answers)
         {
             var response = await _whoKnowsKnowsGrpcService.CalculatePoints(answers);
